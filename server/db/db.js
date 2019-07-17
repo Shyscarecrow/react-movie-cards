@@ -1,5 +1,6 @@
 const moviesData = require('./movies.json');
 const randomRating = require('./randomRating');
+const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:3000';
 
 module.exports = () => {
   const movies = loadMovies();
@@ -10,7 +11,7 @@ module.exports = () => {
 };
 
 function loadMovies() {
-  return moviesData;
+  return moviesData.map(movie => ({...movie, imageUrl: `${API_BASE_URL}/${movie.imageUrl}`}))
 }
 
 function loadExtras(movies) {
