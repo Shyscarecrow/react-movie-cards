@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { StarRating } from '../../StarRating';
 import { LayoutType } from '../../LayoutSwitch/LayoutType';
 import styles from './MovieCard.module.scss';
@@ -30,15 +31,20 @@ export const MovieCard = ({
     extras,
   },
 }) => {
+  const isMobileLayout = (layoutType === LayoutType.MOBILE);
   const isReverseTabletLayout = (layoutType === LayoutType.TABLET && reverse);
   const img = renderImg({ imageUrl });
+  const footer = renderFooter({ rating, extraRating: extras[0].rating });
   const body = renderBody({
-    title, subtitle, description, children: isReverseTabletLayout && renderImg({ imageUrl }),
+    title,
+    subtitle,
+    description,
+    childImage: isReverseTabletLayout && img,
+    childFooter: isMobileLayout && footer,
   });
-  const footer = renderFooter({ rating, extraRating: extras.rating });
   return (
-    <div className={styles.movieCard}>
-      <div className={[styles.movieCard, 'card', className].filter(Boolean).join(' ')}>
+    <div className={className}>
+      <div className={classnames(styles.movieCard, 'card', { 'flex-row': isMobileLayout })}>
         {renderLayout({
           layoutType, reverse, img, body, footer,
         })}
@@ -60,14 +66,15 @@ function renderImg({ imageUrl }) {
 }
 
 function renderBody({
-  title, subtitle, description, children,
+  title, subtitle, description, childImage, childFooter,
 }) {
   return (
     <div className="card-body">
       <h4 className="card-title">{title}</h4>
       <h6 className="card-subtitle mb-2 text-muted">{subtitle}</h6>
-      {children}
+      {childImage}
       <p className="text-justify" style={{ fontSize: '14px' }}>{description}</p>
+      {childFooter}
     </div>
   );
 }
@@ -79,7 +86,7 @@ function renderFooter({ rating, extraRating }) {
         <div className="float-left mt-1">
           <StarRating rating={rating} />
         </div>
-        <div className={['cardFooterBadge', 'float-right', 'badge', 'badge-primary', 'badge-pill'].join(' ')}>{rating}</div>
+        <div className="float-right badge badge-primary badge-pill" style={{ fontSize: '1rem' }}>{rating}</div>
       </div>
     </div>
   );
@@ -119,14 +126,17 @@ renderBody.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
   description: PropTypes.string,
-  children: PropTypes.arrayOf(PropTypes.any),
+  childImage: PropTypes.node,
+  childFooter: PropTypes.node,
+
 };
 
 renderBody.defaultProps = {
   title: '',
   subtitle: '',
   description: '',
-  children: [],
+  childImage: null,
+  childFooter: null,
 };
 
 renderImg.propTypes = {

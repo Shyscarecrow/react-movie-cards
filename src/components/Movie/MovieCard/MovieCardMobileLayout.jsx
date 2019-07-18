@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export function MovieCardMobileLayout({
-  img, body, footer, reverse,
+  img, body, reverse,
 }) {
   return (
     reverse
@@ -10,13 +10,11 @@ export function MovieCardMobileLayout({
         <>
           {img}
           {body}
-          {footer}
         </>
       )
       : (
         <>
           {body}
-          {footer}
           {img}
         </>
       )
@@ -26,13 +24,11 @@ export function MovieCardMobileLayout({
 MovieCardMobileLayout.defaultProps = {
   img: null,
   body: null,
-  footer: null,
   reverse: false,
 };
 
 MovieCardMobileLayout.propTypes = {
   img: PropTypes.node,
   body: PropTypes.node,
-  footer: PropTypes.node,
   reverse: PropTypes.bool,
 };

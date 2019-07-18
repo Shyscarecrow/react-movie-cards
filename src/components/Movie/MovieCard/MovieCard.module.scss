@@ -1,11 +1,5 @@
 .movieCard {
   margin-left: 10px;
-  margin-bottom: 10px;
-  max-width: 300px;
-  width: 300px;
-  height: 450px;
-}
-
-.cardFooterBadge {
-  font-size: 1rem !important;
+  margin-bottom: 10px !important;
+  min-height: 450px;
 }
