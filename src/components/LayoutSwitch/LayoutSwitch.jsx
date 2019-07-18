@@ -43,6 +43,6 @@ LayoutSwitch.defaultProps = {
 };
 
 LayoutSwitch.propTypes = {
-  activeLayout: PropTypes.string,
+  activeLayout: PropTypes.oneOf([LayoutType.DESKTOP, LayoutType.TABLET, LayoutType.MOBILE]),
   onSwitchLayout: PropTypes.func,
 };

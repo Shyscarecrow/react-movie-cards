@@ -6,6 +6,7 @@ module.exports = {
   },
   rules: {
     'no-use-before-define': ['error', { 'functions': false }],
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    'react/prop-types': 'off'
   }
 };
