@@ -1,13 +1,19 @@
 import { handleActions } from 'redux-actions';
-import { fetchMovies } from './actions';
+import { requestMovies, requestMoviesSucceeded, requestMoviesFailed } from './actions';
 
 const initialState = {
   movies: [],
+  loading: false,
+  error: false,
 };
 
 export default handleActions(
   {
-    [fetchMovies]: (state, { payload: movies }) => ({ ...state, movies }),
+    [requestMovies]: state => ({ ...state, loading: true, error: false }),
+    [requestMoviesSucceeded]: (state, { payload: movies }) => (
+      { loading: false, error: false, movies }
+    ),
+    [requestMoviesFailed]: state => ({ ...state, loading: false, error: true }),
   },
   initialState,
 );

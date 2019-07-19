@@ -1,4 +1,6 @@
 import { createAction } from 'redux-actions';
-import { fetchMoviesListWithExtras } from '../services/movieService';
 
-export const fetchMovies = createAction('FETCH_MOVIES', fetchMoviesListWithExtras);
+export const fetchMovies = createAction('FETCHED_MOVIES');
+export const requestMovies = createAction('REQUESTED_MOVIES');
+export const requestMoviesSucceeded = createAction('REQUESTED_MOVIES_SUCCEEDED');
+export const requestMoviesFailed = createAction('REQUESTED_MOVIES_FAILED');
