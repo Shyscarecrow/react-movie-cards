@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { MovieList } from './MovieList';
+import MovieList from './MovieList';
 import { LayoutSwitch } from '../LayoutSwitch';
 import { LayoutType } from '../LayoutSwitch/LayoutType';
+import { appStore } from '../../store';
 
 export const Movies = () => {
   const [activeLayout, setActiveLayout] = useState(LayoutType.DESKTOP);
@@ -11,7 +12,7 @@ export const Movies = () => {
       <div className="d-flex flex-row">
         <div className="col-sm-12">
           <LayoutSwitch activeLayout={activeLayout} onSwitchLayout={setActiveLayout} />
-          <MovieList layout={activeLayout} />
+          <MovieList state={appStore} layout={activeLayout} />
         </div>
       </div>
     </div>

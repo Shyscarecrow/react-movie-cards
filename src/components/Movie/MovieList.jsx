@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { observer } from 'mobx-react';
 import { MovieCard } from './MovieCard';
-import { fetchMovies } from '../../store/actions';
 import { LayoutType } from '../LayoutSwitch';
 
 const MOVIE_CARD_COL_COUNT = {
@@ -10,33 +9,30 @@ const MOVIE_CARD_COL_COUNT = {
   [LayoutType.MOBILE]: 'col-md-12',
 };
 
-export const MovieList = connect(
-  state => ({
-    movies: state.movies,
-  }),
-  { fetchMovies },
-)(
-  (props) => {
-    const { movies, layout } = props;
+const MovieList = ({ layout, state }) => {
+  useEffect(() => {
+    async function fetchData() {
+      const response = await state.fetchMovies();
+      state.setMovies(response);
+    }
+    fetchData();
+  }, []);
 
-    useEffect(() => {
-      props.fetchMovies();
-    }, []);
+  return (
+    <div className="card-deck">
+      {
+        state.movies.map((movie, index) => (
+          <MovieCard
+            key={movie.id}
+            className={MOVIE_CARD_COL_COUNT[layout]}
+            movie={movie}
+            layoutType={layout}
+            reverse={(layout !== LayoutType.DESKTOP) && (index % 2 === 0)}
+          />
+        ))
+      }
+    </div>
+  );
+};
 
-    return (
-      <div className="card-deck">
-        {
-          movies.map((movie, index) => (
-            <MovieCard
-              key={movie.id}
-              className={MOVIE_CARD_COL_COUNT[layout]}
-              movie={movie}
-              layoutType={layout}
-              reverse={(layout !== LayoutType.DESKTOP) && (index % 2 === 0)}
-            />
-          ))
-        }
-      </div>
-    );
-  },
-);
+export default observer(MovieList);
