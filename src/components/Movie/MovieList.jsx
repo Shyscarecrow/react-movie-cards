@@ -12,8 +12,16 @@ const MOVIE_CARD_COL_COUNT = {
 const MovieList = ({ layout, state }) => {
   useEffect(() => {
     async function fetchData() {
-      const response = await state.fetchMovies();
-      state.setMovies(response);
+      try {
+        state.setError(false);
+        state.setLoading(true);
+        const response = await state.fetchMovies();
+        state.setMovies(response);
+        state.setLoading(false);
+      } catch (error) {
+        state.setError(true);
+        state.setLoading(false);
+      }
     }
     fetchData();
   }, []);
@@ -21,7 +29,12 @@ const MovieList = ({ layout, state }) => {
   return (
     <div className="card-deck">
       {
-        state.movies.map((movie, index) => (
+      state.loading ? (
+        'Loading...'
+      ) : state.error ? (
+        'Something went wrong :('
+      )
+        : state.movies.map((movie, index) => (
           <MovieCard
             key={movie.id}
             className={MOVIE_CARD_COL_COUNT[layout]}
@@ -30,7 +43,7 @@ const MovieList = ({ layout, state }) => {
             reverse={(layout !== LayoutType.DESKTOP) && (index % 2 === 0)}
           />
         ))
-      }
+    }
     </div>
   );
 };
